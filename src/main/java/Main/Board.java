@@ -4,7 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -17,17 +16,17 @@ public class Board extends Pane {
     private int enPassantCol;
     private int enPassantRow;
 
-    private int tileSize = 85;
-    private int cols = 8;
-    private int rows = 8;
+    private final int tileSize = 85;
+    private final int cols = 8;
+    private final int rows = 8;
 
-    private ArrayList<Piece> pieceList = new ArrayList<>();
+    private final ArrayList<Piece> pieceList = new ArrayList<>();
     private Piece selectedPiece;
 
-    private Input input = new Input(this);
-    public CheckScanner checkScanner = new CheckScanner(this);
+    private final Input input;
+    public final CheckScanner checkScanner;
 
-    private int enPassantTile = -1;
+    public int enPassantTile = -1;
     private boolean isWhiteToMove = true;
     private boolean isGameOver = false;
 
@@ -37,13 +36,16 @@ public class Board extends Pane {
     private int blackTimeRemaining = 600; // 10 minutes in seconds
 
     private TimerPanel timerPanel;
-    private Canvas canvas;
+    private final Canvas canvas;
 
     public Board() {
         this.setPrefSize(cols * tileSize, rows * tileSize);
 
         canvas = new Canvas(cols * tileSize, rows * tileSize);
         this.getChildren().add(canvas);
+
+        input = new Input(this);
+        checkScanner = new CheckScanner(this);
 
         addPieces();
         initializeTimers();
@@ -159,7 +161,6 @@ public class Board extends Pane {
         }
     }
 
-
     private void promotePawn(Move move) {
         pieceList.add(new Queen(this, move.getNewCol(), move.getNewRow(), move.getPiece().isWhite()));
         capture(move.getPiece());
@@ -212,24 +213,7 @@ public class Board extends Pane {
     }
 
     public void addPieces() {
-        pieceList.add(new Rook(this, 0, 0, false));
-        pieceList.add(new Knight(this, 1, 0, false));
-        pieceList.add(new Bishop(this, 2, 0, false));
-        pieceList.add(new Queen(this, 3, 0, false));
-        pieceList.add(new King(this, 4, 0, false));
-        pieceList.add(new Bishop(this, 5, 0, false));
-        pieceList.add(new Knight(this, 6, 0, false));
-        pieceList.add(new Rook(this, 7, 0, false));
-
-        pieceList.add(new Pawn(this, 0, 1, false));
-        pieceList.add(new Pawn(this, 1, 1, false));
-        pieceList.add(new Pawn(this, 2, 1, false));
-        pieceList.add(new Pawn(this, 3, 1, false));
-        pieceList.add(new Pawn(this, 4, 1, false));
-        pieceList.add(new Pawn(this, 5, 1, false));
-        pieceList.add(new Pawn(this, 6, 1, false));
-        pieceList.add(new Pawn(this, 7, 1, false));
-
+        // Adding white pieces
         pieceList.add(new Rook(this, 0, 7, true));
         pieceList.add(new Knight(this, 1, 7, true));
         pieceList.add(new Bishop(this, 2, 7, true));
@@ -239,17 +223,28 @@ public class Board extends Pane {
         pieceList.add(new Knight(this, 6, 7, true));
         pieceList.add(new Rook(this, 7, 7, true));
 
-        pieceList.add(new Pawn(this, 0, 6, true));
-        pieceList.add(new Pawn(this, 1, 6, true));
-        pieceList.add(new Pawn(this, 2, 6, true));
-        pieceList.add(new Pawn(this, 3, 6, true));
-        pieceList.add(new Pawn(this, 4, 6, true));
-        pieceList.add(new Pawn(this, 5, 6, true));
-        pieceList.add(new Pawn(this, 6, 6, true));
-        pieceList.add(new Pawn(this, 7, 6, true));
+        for (int i = 0; i < 8; i++) {
+            pieceList.add(new Pawn(this, i, 6, true));
+        }
+
+        // Adding black pieces
+        pieceList.add(new Rook(this, 0, 0, false));
+        pieceList.add(new Knight(this, 1, 0, false));
+        pieceList.add(new Bishop(this, 2, 0, false));
+        pieceList.add(new Queen(this, 3, 0, false));
+        pieceList.add(new King(this, 4, 0, false));
+        pieceList.add(new Bishop(this, 5, 0, false));
+        pieceList.add(new Knight(this, 6, 0, false));
+        pieceList.add(new Rook(this, 7, 0, false));
+
+        for (int i = 0; i < 8; i++) {
+            pieceList.add(new Pawn(this, i, 1, false));
+        }
 
         draw();
     }
+
+
     public int getEnPassantCol() {
         return enPassantCol;
     }
@@ -353,6 +348,6 @@ public class Board extends Pane {
     }
 
     public void repaint() {
-
+        draw();
     }
 }

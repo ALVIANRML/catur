@@ -11,13 +11,34 @@ public class Bishop extends Piece {
 
     @Override
     public boolean isValidMovement(int col, int row) {
-        // Implementation as before
-        return false;
+        return Math.abs(this.col - col) == Math.abs(this.row - row);
     }
 
-    @Override
     public boolean moveCollidesWithPiece(int col, int row) {
-        // Implementation as before
+
+        //atas kiri
+        if (this.col > col && this.row > row)
+            for (int i = 1; i < Math.abs(this.col - col); i++)
+                if (board.getPiece(this.col - i, this.row - i) != null)
+                    return true;
+        //atas kanan
+        if (this.col < col && this.row > row)
+            for (int i = 1; i < Math.abs(this.col - col); i++)
+                if (board.getPiece(this.col + i, this.row - i) != null)
+                    return true;
+
+        //bawah kiri
+        if (this.col > col && this.row < row)
+            for (int i = 1; i < Math.abs(this.col - col); i++)
+                if (board.getPiece(this.col - i, this.row + i) != null)
+                    return true;
+        //bawah kanan
+        if (this.col < col && this.row < row)
+            for (int i = 1; i < Math.abs(this.col - col); i++)
+                if (board.getPiece(this.col + i, this.row + i) != null)
+                    return true;
+
+
         return false;
     }
 }

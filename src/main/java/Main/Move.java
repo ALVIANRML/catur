@@ -4,12 +4,12 @@ import pieces.Piece;
 
 public class Move {
 
-    private int oldCol;
-    private int oldRow;
-    private int newCol;
-    private int newRow;
+    private final int oldCol;
+    private final int oldRow;
+    private final int newCol;
+    private final int newRow;
 
-    private Piece piece;
+    private final Piece piece;
     private Piece capture;
 
     public Move(Board board, Piece piece, int newCol, int newRow) {

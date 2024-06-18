@@ -11,13 +11,58 @@ public class Queen extends Piece {
 
     @Override
     public boolean isValidMovement(int col, int row) {
-        // Implementation as before
-        return false;
+        return this.col == col || this.row == row || Math.abs(this.col - col) == Math.abs(this.row - row);
     }
 
-    @Override
     public boolean moveCollidesWithPiece(int col, int row) {
-        // Implementation as before
+        if (this.col == col || this.row == row) {
+            //kiri
+            if (this.col > col)
+                for (int c = this.col - 1; c > col; c--)
+                    if (board.getPiece(c, this.row) != null)
+                        return true;
+            //kanan
+            if (this.col < col)
+                for (int c = this.col + 1; c < col; c++)
+                    if (board.getPiece(c, this.row) != null)
+                        return true;
+            //atas
+            if (this.row > row)
+                for (int r = this.row - 1; r > row; r--)
+                    if (board.getPiece(this.col, r) != null)
+                        return true;
+            //bawah
+            if (this.row < row)
+                for (int r = this.row + 1; r < row; r++)
+                    if (board.getPiece(this.col, r) != null)
+                        return true;
+        } else {
+            //atas kanan
+            if (this.col > col && this.row > row)
+                for (int i = 1; i < Math.abs(this.col - col); i++)
+                    if (board.getPiece(this.col - i, this.row - i) != null)
+                        return true;
+            //atas kiri
+            if (this.col < col && this.row > row)
+                for (int i = 1; i < Math.abs(this.col - col); i++)
+                    if (board.getPiece(this.col + i, this.row - i) != null)
+                        return true;
+
+            //bawah kiri
+            if (this.col > col && this.row < row)
+                for (int i = 1; i < Math.abs(this.col - col); i++)
+                    if (board.getPiece(this.col - i, this.row + i) != null)
+                        return true;
+            //bawah kanan
+            if (this.col < col && this.row < row)
+                for (int i = 1; i < Math.abs(this.col - col); i++)
+                    if (board.getPiece(this.col + i, this.row + i) != null)
+                        return true;
+
+        }
         return false;
     }
 }
+
+
+
